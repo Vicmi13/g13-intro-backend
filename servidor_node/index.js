@@ -1,5 +1,6 @@
 const http = require("http");
-const url = require("url");
+const fs = require("fs");
+const { resolveNaptr } = require("dns");
 
 // CLIENTE
 // localhost:3001
@@ -14,22 +15,59 @@ const url = require("url");
 // localhost:3000/login path login/ => login.html
 
 const server = http.createServer((req, res) => {
-  console.log("method", req.method);
+  //  console.log("method", req.method);
 
   // Se define como un pseudonimo
   const { url: urlReq } = req;
   const baseURL = req.protocol + "://" + req.headers.host + "/";
   const urlPath = new URL(urlReq, baseURL);
 
-  if (urlPath.pathname === "/" && req.method === "GET") {
-    console.log("url parse ", urlPath.pathname);
-    res.statusCode = 200;
+  console.log("url parse ", urlPath.pathname);
+
+  const pageError = (res) => {
+    res.statusCode = 500;
     res.setHeader("Content-Type", "text/html");
-    res.end("<h1>hola </h1> ");
+    res.write("<h3> Error en el servidor </h3>");
+    res.end();
+    return res;
+  };
+  if (urlPath.pathname === "/" && req.method === "GET") {
+    fs.readFile("pages/index.html", (err, data) => {
+      if (err) {
+        return pageError(res);
+      } else {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/html");
+        res.write(data);
+        res.end();
+      }
+    });
+  } else if (urlPath.pathname === "/compras") {
+    fs.readFile(`pages/${urlPath.pathname}.html`, (err, data) => {
+      if (err) {
+        return pageError(res);
+      } else {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/html");
+        res.write(data);
+        res.end();
+      }
+    });
+  } else if (urlPath.pathname === "/login") {
+    fs.readFile(`pages/${urlPath.pathname}.html`, (err, data) => {
+      if (err) {
+        return pageError(res);
+      } else {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/html");
+        res.write(data);
+        res.end();
+      }
+    });
   } else {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "text/plain");
-    res.end("regreso texto plano ");
+    res.statusCode = 404;
+    res.setHeader("Content-Type", "text/html");
+    res.end("<h3> Recurso no encontrado <h3/> ");
   }
 });
 
