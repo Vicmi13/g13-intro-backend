@@ -31,6 +31,7 @@ const server = http.createServer((req, res) => {
     res.end();
     return res;
   };
+
   if (urlPath.pathname === "/" && req.method === "GET") {
     fs.readFile("pages/index.html", (err, data) => {
       if (err) {
@@ -64,6 +65,14 @@ const server = http.createServer((req, res) => {
         res.end();
       }
     });
+  } else if (urlPath.pathname === "/permisos") {
+    const messageObject = { message: "Invalid token" };
+    const status = 401;
+
+    const response = JSON.stringify(messageObject);
+    res.writeHead(status, "Content-Type", "application/json");
+    res.write(response);
+    res.end();
   } else {
     res.statusCode = 404;
     res.setHeader("Content-Type", "text/html");
