@@ -9,7 +9,7 @@ const app = express()
 
 //  define el verbo HTTP con 2 params; la ruta '/' y el handler 
 app.get('/', (req, res) => { 
-    res.send('primer backend con express 🔥')
+    res.send('hello world con express  en Node🔥')
 })
 
 // Se define el puerto y callback de finalizacion
