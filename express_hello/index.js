@@ -1,5 +1,6 @@
 // importamos express
 import express from "express";
+import { checkParamsCreate } from "./middlewares/generic.js";
 import UserService from "./services/User.js";
 //  const name = require('module') NO  FUNCIONA CON "type": "module",
 
@@ -33,9 +34,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/", ((req,res,next) => {
-  console.log('url', req.baseUrl)
-}), async (req, res) => {
+app.post("/", checkParamsCreate, async (req, res) => {
   const { name, lastName, email } = req.body;
 
   // const objBody = {name, lastName, email}
@@ -79,23 +78,22 @@ app.put("/:id", async (req, res) => {
   }
 });
 
-
-app.delete('/:id',  async (req, res) => {
-  const { id } = req.params
+app.delete("/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const result = await userService.deleteUser(id)
-    console.log(result)
+    const result = await userService.deleteUser(id);
+    console.log(result);
     res.status(200).json({
-      message: 'User deleted successfully',
-      data: {}
-    })
-  } catch (error){
+      message: "User deleted successfully",
+      data: {},
+    });
+  } catch (error) {
     res.status(400).json({
-      message: 'Bad request: id not found'
-    })
-    console.log(error, 'User id not found')
+      message: "Bad request: id not found",
+    });
+    console.log(error, "User id not found");
   }
-})
+});
 
 // Se define el puerto y callback
 app.listen(3001, function () {
