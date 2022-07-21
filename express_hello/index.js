@@ -12,17 +12,30 @@ const app = express();
 // express.json() AQUI SE EJECUTA EL middleware
 app.use(express.json()); // CON use() definimos que va a trabajar como midd de nuestro backend
 
+// MIDDLEWARES GLOBALES
+// app.use((req,res, next) => {
+//   req.greeting = 'hola middlewares 💻'
+//   console.log('primer midd creado')
+//   next()
+// })
+// app.use( (_,__,next ) => {
+//   console.log('fecha', new Date())
+//   next()
+// })
+
 const userService = new UserService();
 
 //  define el verbo HTTP con 2 params; la ruta '/' y el handler
-app.get("/", (_, res) => {
+app.get("/", (req, res) => {
   res.status(200).json({
     message: "retrieve all users",
     data: userService.users,
   });
 });
 
-app.post("/", async (req, res) => {
+app.post("/", ((req,res,next) => {
+  console.log('url', req.baseUrl)
+}), async (req, res) => {
   const { name, lastName, email } = req.body;
 
   // const objBody = {name, lastName, email}
@@ -66,17 +79,23 @@ app.put("/:id", async (req, res) => {
   }
 });
 
-// : nos sirven para recupear params de la URL
-// nombreParam es con el que accedemos al valor en req.params
-app.delete("/:id", (req, res) => {
-  console.log("mi parametro", req.params.id);
 
-  // EJERCICIO crear metodo en UserService para eliminarUsuario)
-  res.status(200).json({
-    message: "User deleted succesfully",
-    data: {},
-  });
-});
+app.delete('/:id',  async (req, res) => {
+  const { id } = req.params
+  try {
+    const result = await userService.deleteUser(id)
+    console.log(result)
+    res.status(200).json({
+      message: 'User deleted successfully',
+      data: {}
+    })
+  } catch (error){
+    res.status(400).json({
+      message: 'Bad request: id not found'
+    })
+    console.log(error, 'User id not found')
+  }
+})
 
 // Se define el puerto y callback
 app.listen(3001, function () {

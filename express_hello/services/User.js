@@ -66,6 +66,31 @@ class UserService {
       }
     });
   }
+
+  deleteUser(id) {
+    return new Promise((resolve, reject) => {
+      const indexUser = this.users.findIndex(element => element.id === parseInt(id))
+      let user = this.users[indexUser]
+      if (user) {
+        console.log('La posición del elemento en el array this.users a borrar es: ',indexUser);
+        console.log('Se encontro el item a borrar y es el siguiente: ', user)
+        for(let i = 0; i <= this.users.length-1; i++) {
+          if(this.users[i].id == user.id) {
+            this.users.splice(indexUser, 1)
+            console.log('El arreglo de usarios queda así: ',this.users);
+            console.log('User deleted successfully')
+            resolve()
+          }
+        }
+      } else if(!user) {
+        console.log('Error at delete user')
+        reject('---')
+      }
+    })
+  }
+
+
+  
 }
 
 // FRONT
