@@ -3,22 +3,31 @@ import express from "express";
 import mysql from "mysql2";
 
 //  const name = require('module') NO  FUNCIONA CON "type": "module" en package.json,
+import { mysqlCredentials } from "./config/db.js";
 import { itemRouter } from "./routes/item-routes.js";
 import { productRouter } from "./routes/product-routes.js";
 import { userRouter } from "./routes/user-routes.js";
-import { DB, HOST, USER, PASSWORD } from "./config/db";
 
-/** =========== MYSQL  =========== */
+mysqlCredentials; /** =========== MYSQL  =========== */
+console.log("DB", mysqlCredentials.DB);
 
-const connection = dbConfig.mysql.createConnection({
-  host: HOST,
-  user: USER,
-  database: DB,
-  password: PASSWORD,
+const connection = mysql.createConnection({
+  host: mysqlCredentials.HOST,
+  user: mysqlCredentials.USER,
+  database: mysqlCredentials.DB,
+  password: mysqlCredentials.PASSWORD,
   // default 3306
 });
 
-console.log("connection db", connection);
+connection.query("AQUI VA MI QUERY", (err, result, metadata) => {
+  if (err) {
+    console.log("err", err);
+  } else {
+    console.log("result", result);
+    console.log("metadata", metadata);
+  }
+});
+
 // guarda funciones o metodos para trabajar con req, res, middlewares, handles, routers
 const app = express();
 const router = express.Router();
