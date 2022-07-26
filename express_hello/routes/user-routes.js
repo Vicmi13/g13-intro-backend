@@ -9,23 +9,44 @@ const userService = new UserService();
 
 userRouter.get("/", async (req, res) => {
   //  GET /users
-
-  let firstOwner = {};
-  let firstVet = {};
-
-  const ownerResponse = new Promise((resolve, reject) => {
-    connection.query("SELECT * FROM owners", (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
+  const ownerResponse = () => {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM owners", (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
     });
-  });
+  };
+
+  /**
+   * 
+   * @ EJEMPLO de wrapper de promesa
+   * para manejar connection.query()
+   
+  const vetResponse = () => {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM veterinarians", (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  };
+  */
 
   try {
-    const result = await ownerResponse();
-    console.log("result", result);
+    const resultOwner = await ownerResponse();
+    // const resultVet = await vetResponse();
+
+    res.status(200).json({
+      message: "retrieve all users",
+      data: resultOwner,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -33,25 +54,6 @@ userRouter.get("/", async (req, res) => {
       data: "",
     });
   }
-
-  console.log("result =========", result);
-  connection.query("SELECT * FROM veterinarians", (err, data) => {
-    if (err) {
-      console.log("err", err);
-      res.status(500).json({
-        message: "Error recovering owners",
-        data: "",
-      });
-    } else {
-      firstVet = data[0];
-      console.log("data VET", data[0]);
-    }
-  });
-
-  res.status(200).json({
-    message: "retrieve all users",
-    data: { ...firstOwner, ...firstVet },
-  });
 
   console.log("FIN DE CALLBACK ==== ");
 });
