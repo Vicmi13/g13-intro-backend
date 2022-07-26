@@ -9,14 +9,6 @@ import { userRouter } from "./routes/user-routes.js";
 import { connection } from "./config/db.js";
 /** =========== MYSQL  =========== */
 
-connection.query("SELECT * FROM owners", (err, result) => {
-  if (err) {
-    console.log("err", err);
-  } else {
-    console.log("result", result);
-  }
-});
-
 // guarda funciones o metodos para trabajar con req, res, middlewares, handles, routers
 const app = express();
 const router = express.Router();

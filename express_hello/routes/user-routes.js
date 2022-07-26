@@ -1,14 +1,27 @@
-import express, { application } from "express";
+import express from "express";
+
+import { connection } from "../config/db.js";
 import { checkParamsCreate } from "../middlewares/generic.js";
 import UserService from "../services/User.js";
-const userRouter = express.Router();
 
+const userRouter = express.Router();
 const userService = new UserService();
 
 userRouter.get("/", (req, res) => {
-  res.status(200).json({
-    message: "retrieve all users",
-    data: userService.users,
+  //  GET /users
+  connection.query("SELECT * FROM owners", (err, data) => {
+    if (err) {
+      console.log("err", err);
+      res.status(500).json({
+        message: "Error recovering owners",
+        data: "",
+      });
+    } else {
+      res.status(200).json({
+        message: "retrieve all users",
+        data,
+      });
+    }
   });
 });
 
