@@ -1,9 +1,6 @@
-export const mysqlCredentials = {
-  HOST: "127.0.0.1",
-  USER: "root",
-  DB: "g13",
-  PASSWORD: "rootpass",
-};
+import mysql from "mysql2";
+import { mysqlCredentials } from "../constants";
 
-// const name = ''
-// export default  name
+export const connection = mysql.createConnection(mysqlCredentials);
+
+// mysql.createPool COMENTAR

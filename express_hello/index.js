@@ -19,12 +19,11 @@ const connection = mysql.createConnection({
   // default 3306
 });
 
-connection.query("AQUI VA MI QUERY", (err, result, metadata) => {
+connection.query("SELECT * FROM owners", (err, result) => {
   if (err) {
     console.log("err", err);
   } else {
     console.log("result", result);
-    console.log("metadata", metadata);
   }
 });
 
