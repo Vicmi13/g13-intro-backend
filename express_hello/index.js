@@ -3,21 +3,11 @@ import express from "express";
 import mysql from "mysql2";
 
 //  const name = require('module') NO  FUNCIONA CON "type": "module" en package.json,
-import { mysqlCredentials } from "./config/db.js";
 import { itemRouter } from "./routes/item-routes.js";
 import { productRouter } from "./routes/product-routes.js";
 import { userRouter } from "./routes/user-routes.js";
-
-mysqlCredentials; /** =========== MYSQL  =========== */
-console.log("DB", mysqlCredentials.DB);
-
-const connection = mysql.createConnection({
-  host: mysqlCredentials.HOST,
-  user: mysqlCredentials.USER,
-  database: mysqlCredentials.DB,
-  password: mysqlCredentials.PASSWORD,
-  // default 3306
-});
+import { connection } from "./config/db.js";
+/** =========== MYSQL  =========== */
 
 connection.query("SELECT * FROM owners", (err, result) => {
   if (err) {
