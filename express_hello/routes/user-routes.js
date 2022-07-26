@@ -7,9 +7,35 @@ import UserService from "../services/User.js";
 const userRouter = express.Router();
 const userService = new UserService();
 
-userRouter.get("/", (req, res) => {
+userRouter.get("/", async (req, res) => {
   //  GET /users
-  connection.query("SELECT * FROM owners", (err, data) => {
+
+  let firstOwner = {};
+  let firstVet = {};
+
+  const ownerResponse = new Promise((resolve, reject) => {
+    connection.query("SELECT * FROM owners", (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+
+  try {
+    const result = await ownerResponse();
+    console.log("result", result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error,
+      data: "",
+    });
+  }
+
+  console.log("result =========", result);
+  connection.query("SELECT * FROM veterinarians", (err, data) => {
     if (err) {
       console.log("err", err);
       res.status(500).json({
@@ -17,12 +43,17 @@ userRouter.get("/", (req, res) => {
         data: "",
       });
     } else {
-      res.status(200).json({
-        message: "retrieve all users",
-        data,
-      });
+      firstVet = data[0];
+      console.log("data VET", data[0]);
     }
   });
+
+  res.status(200).json({
+    message: "retrieve all users",
+    data: { ...firstOwner, ...firstVet },
+  });
+
+  console.log("FIN DE CALLBACK ==== ");
 });
 
 userRouter.post("/", checkParamsCreate, async (req, res) => {

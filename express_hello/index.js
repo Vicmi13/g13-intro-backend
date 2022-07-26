@@ -6,7 +6,6 @@ import mysql from "mysql2";
 import { itemRouter } from "./routes/item-routes.js";
 import { productRouter } from "./routes/product-routes.js";
 import { userRouter } from "./routes/user-routes.js";
-import { connection } from "./config/db.js";
 /** =========== MYSQL  =========== */
 
 // guarda funciones o metodos para trabajar con req, res, middlewares, handles, routers
