@@ -1,6 +1,6 @@
-import { connection } from "../config/db";
+import { connection } from "../config/db.js";
 
-const getAllUser = () => {
+const getAllUsers = () => {
   return new Promise((resolve, reject) => {
     connection.query("SELECT * FROM owners", (err, data) => {
       if (err) {
@@ -45,4 +45,4 @@ const createUser = (user) => {
   });
 };
 
-export { getAllItems, getUserById, createUser };
+export { getAllUsers, getUserById, createUser };

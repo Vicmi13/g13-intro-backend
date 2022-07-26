@@ -1,19 +1,19 @@
 import express from "express";
 
 import { connection } from "../config/db.js";
-import { getAllItems } from "../controllers/UserController.js";
+import { getAllUsers, getUserById } from "../controllers/UserController.js";
 import { checkParamsCreate } from "../middlewares/generic.js";
 import UserService from "../services/User.js";
 
 const userRouter = express.Router();
 const userService = new UserService();
 
-// /users/v2
-userRouter.get('/v2', async (req,res) => {
+// /users/v2 REFACTOR USANDO CONTROLLERS
+userRouter.get("/v2", async (req, res) => {
   try {
-    const data = await getAllItems()
+    const data = await getAllUsers();
     res.status(200).json({
-      message: 'Users in refactor recovered',
+      message: "Users in refactor recovered",
       data,
     });
   } catch (error) {
@@ -22,7 +22,8 @@ userRouter.get('/v2', async (req,res) => {
       message: error,
       data: "",
     });
-}
+  }
+});
 
 userRouter.get("/", async (req, res) => {
   //  GET /users
@@ -73,6 +74,24 @@ userRouter.get("/", async (req, res) => {
   }
 
   console.log("FIN DE CALLBACK ==== ");
+});
+
+userRouter.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const userFound = await getUserById(id);
+    res.status(200).json({
+      message: "User found",
+      data: userFound,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: `Error recover user by Id ${error}`,
+      data: "",
+    });
+  }
 });
 
 userRouter.post("/", checkParamsCreate, async (req, res) => {
