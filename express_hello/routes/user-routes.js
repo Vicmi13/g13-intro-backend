@@ -1,11 +1,28 @@
 import express from "express";
 
 import { connection } from "../config/db.js";
+import { getAllItems } from "../controllers/UserController.js";
 import { checkParamsCreate } from "../middlewares/generic.js";
 import UserService from "../services/User.js";
 
 const userRouter = express.Router();
 const userService = new UserService();
+
+// /users/v2
+userRouter.get('/v2', async (req,res) => {
+  try {
+    const data = await getAllItems()
+    res.status(200).json({
+      message: 'Users in refactor recovered',
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error,
+      data: "",
+    });
+}
 
 userRouter.get("/", async (req, res) => {
   //  GET /users
@@ -23,7 +40,7 @@ userRouter.get("/", async (req, res) => {
 
   /**
    * 
-   * @ EJEMPLO de wrapper de promesa
+   * EJEMPLO de wrapper de promesa
    * para manejar connection.query()
    
   const vetResponse = () => {
