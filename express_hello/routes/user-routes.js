@@ -1,14 +1,20 @@
 import express from "express";
 
 import { connection } from "../config/db.js";
-import { getAllUsers, getUserById } from "../controllers/UserController.js";
+import {
+  getAllUsers,
+  getAllUsersRefactor,
+  getUserById,
+} from "../controllers/UserController.js";
 import { checkParamsCreate } from "../middlewares/generic.js";
-import UserService from "../services/User.js";
+import UserService from "../services/User_Fake.js";
 
 const userRouter = express.Router();
 const userService = new UserService();
 
 // /users/v2 REFACTOR USANDO CONTROLLERS
+userRouter.get("/v3", getAllUsersRefactor);
+
 userRouter.get("/v2", async (req, res) => {
   try {
     const data = await getAllUsers();

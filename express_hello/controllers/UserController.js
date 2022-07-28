@@ -1,4 +1,23 @@
 import { connection } from "../config/db.js";
+import { usersRecovered } from "../services/User.js";
+
+// GET
+
+const getAllUsersRefactor = async (req, res) => {
+  try {
+    const users = await usersRecovered();
+    return res.status(200).json({
+      message: "Users with services recover successfully",
+      data: users,
+    });
+  } catch (error) {
+    console.log("error in refactor", error);
+    res.status(500).json({
+      message: error,
+      data: "",
+    });
+  }
+};
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
@@ -12,6 +31,7 @@ const getAllUsers = () => {
   });
 };
 
+// GET :id
 const getUserById = (idUser) => {
   return new Promise((resolve, reject) => {
     const id = [idUser];
@@ -25,6 +45,7 @@ const getUserById = (idUser) => {
   });
 };
 
+//POST
 const createUser = (user) => {
   return new Promise((resolve, reject) => {
     // const stmtParams = [POSITION1 = primer ?, POSITION2 = segundo ?,  POSITION3 = tercer ?]
@@ -45,4 +66,4 @@ const createUser = (user) => {
   });
 };
 
-export { getAllUsers, getUserById, createUser };
+export { getAllUsers, getAllUsersRefactor, getUserById, createUser };
