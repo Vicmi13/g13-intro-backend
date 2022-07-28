@@ -1,5 +1,5 @@
 import { connection } from "../config/db.js";
-import { usersRecovered } from "../services/User.js";
+import { userCreated, usersRecovered } from "../services/User.js";
 
 // GET
 
@@ -7,7 +7,7 @@ const getAllUsersRefactor = async (req, res) => {
   try {
     const users = await usersRecovered();
     return res.status(200).json({
-      message: "Users with services recover successfully",
+      message: "Users with /services recover successfully",
       data: users,
     });
   } catch (error) {
@@ -66,4 +66,27 @@ const createUser = (user) => {
   });
 };
 
-export { getAllUsers, getAllUsersRefactor, getUserById, createUser };
+const createUserRefactor = (req, res) => {
+  // call User service
+  userCreated(req.body)
+    .then((data) => {
+      res
+        .status(201)
+        .json({ message: "Users with /services created successfully", data });
+    })
+    .catch((error) => {
+      console.log("error in create user with /services", error);
+      res.status(500).json({
+        message: error,
+        data: "",
+      });
+    });
+};
+
+export {
+  getAllUsers,
+  getAllUsersRefactor,
+  getUserById,
+  createUser,
+  createUserRefactor,
+};

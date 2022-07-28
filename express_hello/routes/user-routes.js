@@ -2,6 +2,7 @@ import express from "express";
 
 import { connection } from "../config/db.js";
 import {
+  createUserRefactor,
   getAllUsers,
   getAllUsersRefactor,
   getUserById,
@@ -120,6 +121,8 @@ userRouter.post("/", checkParamsCreate, async (req, res) => {
     console.log(error, "error create user");
   }
 });
+
+userRouter.post("/v3", checkParamsCreate, createUserRefactor);
 
 userRouter.put("/:id", async (req, res) => {
   console.log(req.body);

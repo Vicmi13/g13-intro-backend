@@ -12,4 +12,22 @@ const usersRecovered = () => {
   });
 };
 
-export { usersRecovered };
+const userCreated = (body) => {
+  const { name, lastName, email, id } = body;
+  return new Promise((resolve, reject) => {
+    const stmParams = [id, name, lastName, email];
+    connection.query(
+      "INSERT INTO owners (id, name, last_name, email) VALUES (?,?,?,?);",
+      stmParams,
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+export { usersRecovered, userCreated };
