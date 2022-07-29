@@ -1,6 +1,7 @@
 const express = require("express");
 
 const { sequelize } = require("./config/sequelize");
+const userRouter = require("./routes/userRouter");
 
 const app = express();
 const router = express.Router();
@@ -19,7 +20,8 @@ app.get("/", (_, res) => {
 });
 
 /** ======== RUTAS ======== */
-router.use(`${URL_BASE}/users`, userRouter);
+router.use(`/users`, userRouter);
+app.use(router);
 
 // PROBAR CONEXICON MYSQL - SEQUELIZE
 const testing = async () => {
