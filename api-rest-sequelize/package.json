@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
     "migration-dev": "npx sequelize-cli db:migrate",
     "migration-stage": "npx sequelize-cli db:migrate --env test",
     "seeder-dev": "npx sequelize-cli db:seed:all"
@@ -12,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^2.0.19",
     "sequelize-cli": "^6.4.1"
   },
   "dependencies": {
