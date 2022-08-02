@@ -1,10 +1,13 @@
+const { DataTypes } = require("sequelize");
+
+const { sequelize } = require("../config/sequelize");
 const User = require("../models/user");
 
 const getAllUsers = async (_, res) => {
   try {
-    console.log("here");
-    const result = await User.findAll();
-    res.status(201).json({
+    const result = await User(sequelize, DataTypes).findAll();
+    console.log("user results", result);
+    res.status(200).json({
       message: "Recover all users",
       data: result,
     });
