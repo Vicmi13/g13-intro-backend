@@ -21,9 +21,10 @@ const getAllUsers = async (_, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { firstName, lastName, email } = req.body;
+  const { firstName, lastName, email, roleId } = req.body;
   try {
-    const result = await User.create({ firstName, lastName, email });
+    console.log("roleId", roleId);
+    const result = await User.create({ firstName, lastName, email, roleId });
     console.log("result", result.dataValues);
     res.status(201).json({
       message: "User created successfully",

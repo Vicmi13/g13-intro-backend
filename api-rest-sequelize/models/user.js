@@ -32,6 +32,7 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 const { sequelize } = require("../config/sequelize");
+const Role = require("./role");
 
 class User extends Model {
   /**
@@ -49,11 +50,18 @@ User.init(
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     email: DataTypes.STRING,
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize,
     modelName: "User",
   }
 );
+
+User.belongsTo(role);
+Role.hasOne(User);
 
 module.exports = User;
