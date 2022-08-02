@@ -61,7 +61,7 @@ User.init(
   }
 );
 
-User.belongsTo(role);
+User.belongsTo(Role);
 Role.hasOne(User);
 
 module.exports = User;
